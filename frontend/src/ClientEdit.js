@@ -20,8 +20,14 @@ class ClientEdit extends Component {
     }
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const client = await (await fetch(`/clients/${this.props.match.params.id}`)).json();
-            this.setState({item: client});
+            try {
+                const client = await (await fetch(`/clients/${this.props.match.params.id}`)).json();
+                if (!client.status) {
+                    this.setState({item: client});
+                }
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
     handleChange(event) {
